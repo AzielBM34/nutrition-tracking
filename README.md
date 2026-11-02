@@ -33,6 +33,7 @@ Version 1.0 includes:
 ## Documentation
 
 - [Eisenhower Matrix](docs/eisenhower-matrix.pdf)
+- System Diagram: ![System Diagram](docs/system-diagram.png)
 
 ## Build Plan
 
