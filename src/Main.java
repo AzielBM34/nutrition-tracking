@@ -6,6 +6,7 @@ public class Main {
         IO.println("\n=== Nutrition Tracker ===");
         IO.println("1. Add food");
         IO.println("2. View Today");
+        IO.println("3. Set Goals");
         IO.println("0. Exit");
     }
 
@@ -32,8 +33,26 @@ public class Main {
         IO.println("Sodium: " + log.totalSodiumMg(today) + " mg");
         IO.println("Potassium: " + log.totalPotassiumMg(today) + " mg");
     }
+
+    private static Goals setGoals() {
+        double calories = readNonNegativeNumber("Calorie goal: ");
+        double protein = readNonNegativeNumber("Protein goal (g): ");
+        double carbs = readNonNegativeNumber("Carb goal (g): ");
+        double fat = readNonNegativeNumber("Fat goal (g): ");
+        double sugar = readNonNegativeNumber("Sugar goal (g): ");
+        double sodiumMg = readNonNegativeNumber("Sodium goal (mg): ");
+        double potassiumMg = readNonNegativeNumber("Potassium goal (mg): ");
+
+        Goals goals = new Goals(calories, protein, carbs, fat, sugar, sodiumMg, potassiumMg);
+        EntryStorage.saveGoals(goals);
+        IO.println("Goals saved.");
+        return goals;
+    }
+
     public static void main(String[] args) {
         DailyLog log = new DailyLog();
+        //Null means the user has never set goals, "remaining" display must handle
+        Goals goals = EntryStorage.loadGoals();
         //Reload yesterdays and earlier entries so log survives closing the program
         ArrayList<FoodEntry> savedEntries = EntryStorage.loadEntries();
         for (int i = 0; i < savedEntries.size(); i++) {
@@ -54,6 +73,8 @@ public class Main {
                 namra = false;
             } else if (input.equals("2")) {
                 viewToday(log);
+            } else if (input.equals("3")) {
+                goals = setGoals();
             } else {
                 IO.println("Invalid choice. Please enter a number from the menu.");
             }
