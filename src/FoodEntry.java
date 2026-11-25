@@ -55,4 +55,29 @@ public class FoodEntry {
     public double getPotassiumMg() {
         return potassiumMg;
     }
+
+    //Comma seperate CSV fields, comma insdie food name get split into 2 fields
+    //Replacing with a space keeps every line at 9 fields
+    public String toCSVLine() {
+        return date + "," + name.replace(",", " ") + "," + calories + "," + protein + ","
+                + carbs + "," + fat + "," + sugar + "," + sodiumMg + "," + potassiumMg;
+    }
+
+    //Rebuilds an entry from saved line, ThrowsIllegalArgExcept if line is damaged
+    //Storage class skip bad lines, doesnt crash on start
+    public static FoodEntry fromCSVLine(String line) {
+        String[] parts = line.split(",");
+        if (parts.length != 9) {
+            throw new IllegalArgumentException("Expected 9 fields but found " + parts.length);
+        }
+        try {
+            return new FoodEntry(LocalDate.parse(parts[0]), parts[1],
+                    Double.parseDouble(parts[2]), Double.parseDouble(parts[3]),
+                    Double.parseDouble(parts[4]), Double.parseDouble(parts[5]),
+                    Double.parseDouble(parts[6]), Double.parseDouble(parts[7]),
+                    Double.parseDouble(parts[8]));
+        } catch (java.time.format.DateTimeParseException e) {
+            throw new IllegalArgumentException("Bad date: " + parts[0]);
+        }
+    }
 }

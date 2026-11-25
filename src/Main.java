@@ -34,6 +34,11 @@ public class Main {
     }
     public static void main(String[] args) {
         DailyLog log = new DailyLog();
+        //Reload yesterdays and earlier entries so log survives closing the program
+        ArrayList<FoodEntry> savedEntries = EntryStorage.loadEntries();
+        for (int i = 0; i < savedEntries.size(); i++) {
+            log.addEntry(savedEntries.get(i));
+        }
 
         boolean namra = true;
 
@@ -67,17 +72,19 @@ public class Main {
         double sodiumMg = readNonNegativeNumber("Sodium (mg): ");
         double potassiumMg = readNonNegativeNumber("Potassium (mg): ");
 
-        // FoodEntry validates name, so menu can report problem
+        //FoodEntry validates name, so menu can report problem
         try {
-            log.addEntry(new FoodEntry(LocalDate.now(), name, calories, protein,
-                    carbs, fat, sugar, sodiumMg, potassiumMg));
+            FoodEntry entry = new FoodEntry(LocalDate.now(), name, calories, protein, carbs, fat,
+                    sugar, sodiumMg, potassiumMg);
+            log.addEntry(entry);
+            EntryStorage.saveEntry(entry);
             IO.println("Added " + name.trim() + ".");
         } catch (IllegalArgumentException e) {
             IO.println("Invalid input: " + e.getMessage() + " Please try again.");
         }
     }
 
-    // Keeps asking until user types a valid number, one typo doesn't throw away the whole entry.
+    //Keeps asking until user types a valid number, one typo doesn't throw away the whole entry
     private static double readNonNegativeNumber(String prompt) {
         while (true) {
             try {
