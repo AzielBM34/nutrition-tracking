@@ -5,11 +5,36 @@ public class Main {
     private static void printMenu() {
         IO.println("\n=== Nutrition Tracker ===");
         IO.println("1. Add food");
+        IO.println("2. View Today");
         IO.println("0. Exit");
     }
+
+    private static void viewToday(DailyLog log) {
+        LocalDate today = LocalDate.now();
+        ArrayList<FoodEntry> todaysEntries = log.getEntriesFor(today);
+
+        if (todaysEntries.isEmpty()) {
+            IO.println("No food logged today.");
+            return;
+        }
+
+        IO.println("\n--- Today's Foods ---");
+        for (int i = 0; i < todaysEntries.size(); i++) {
+            IO.println((i + 1) + ". " + todaysEntries.get(i).getName()
+                    + " (" + todaysEntries.get(i).getCalories() + " cal)");
+        }
+
+        IO.println("Calories: " + log.totalCalories(today));
+        IO.println("Protein: " + log.totalProtein(today) + " g");
+        IO.println("Carbs: " + log.totalCarbs(today) + " g");
+        IO.println("Fat: " + log.totalFat(today) + " g");
+        IO.println("Sugar: " + log.totalSugar(today) + " g");
+        IO.println("Sodium: " + log.totalSodiumMg(today) + " mg");
+        IO.println("Potassium: " + log.totalPotassiumMg(today) + " mg");
+    }
     public static void main(String[] args) {
-        //Temporary list. so addFood has place to put entries. DailyLog will replave soon
-        ArrayList<FoodEntry> entries = new ArrayList<>();
+        DailyLog log = new DailyLog();
+
         boolean namra = true;
 
         while (namra) {
@@ -19,9 +44,11 @@ public class Main {
             String input = IO.readln().trim();
 
             if (input.equals("1")) {
-                addFood(entries);
+                addFood(log);
             } else if (input.equals("0")) {
                 namra = false;
+            } else if (input.equals("2")) {
+                viewToday(log);
             } else {
                 IO.println("Invalid choice. Please enter a number from the menu.");
             }
@@ -30,7 +57,7 @@ public class Main {
         IO.println("Goodbye!");
     }
 
-    private static void addFood(ArrayList<FoodEntry> entries) {
+    private static void addFood(DailyLog log) {
         String name = IO.readln("Food name: ");
         double calories = readNonNegativeNumber("Calories: ");
         double protein = readNonNegativeNumber("Protein (g): ");
@@ -42,7 +69,7 @@ public class Main {
 
         // FoodEntry validates name, so menu can report problem
         try {
-            entries.add(new FoodEntry(LocalDate.now(), name, calories, protein,
+            log.addEntry(new FoodEntry(LocalDate.now(), name, calories, protein,
                     carbs, fat, sugar, sodiumMg, potassiumMg));
             IO.println("Added " + name.trim() + ".");
         } catch (IllegalArgumentException e) {

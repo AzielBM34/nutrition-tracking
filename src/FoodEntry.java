@@ -28,5 +28,31 @@ public class FoodEntry {
         this.sodiumMg = sodiumMg;
         this.potassiumMg = potassiumMg;
     }
-
+    public LocalDate getDate() {
+        return date;
+    }
+    public String getName() {
+        return name;
+    }
+    public double getCalories() {
+        return calories;
+    }
+    public double getProtein() {
+        return protein;
+    }
+    public double getCarbs() {
+        return carbs;
+    }
+    public double getFat() {
+        return fat;
+    }
+    public double getSugar() {
+        return sugar;
+    }
+    public double getSodiumMg() {
+        return sodiumMg;
+    }
+    public double getPotassiumMg() {
+        return potassiumMg;
+    }
 }
