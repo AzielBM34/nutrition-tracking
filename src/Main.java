@@ -10,7 +10,7 @@ public class Main {
         IO.println("0. Exit");
     }
 
-    private static void viewToday(DailyLog log) {
+    private static void viewToday(DailyLog log, Goals goals) {
         LocalDate today = LocalDate.now();
         ArrayList<FoodEntry> todaysEntries = log.getEntriesFor(today);
 
@@ -25,13 +25,28 @@ public class Main {
                     + " (" + todaysEntries.get(i).getCalories() + " cal)");
         }
 
-        IO.println("Calories: " + log.totalCalories(today));
-        IO.println("Protein: " + log.totalProtein(today) + " g");
-        IO.println("Carbs: " + log.totalCarbs(today) + " g");
-        IO.println("Fat: " + log.totalFat(today) + " g");
-        IO.println("Sugar: " + log.totalSugar(today) + " g");
-        IO.println("Sodium: " + log.totalSodiumMg(today) + " mg");
-        IO.println("Potassium: " + log.totalPotassiumMg(today) + " mg");
+        //Goals are null until user sets them, every goal lookup is guarded by flag
+        if (goals == null) {
+            // No goals yet, so show plain totals instead of reading from a goals object that doesn't exist.
+            IO.println("\n--- Totals ---");
+            printTotal("Calories", log.totalCalories(today), "cal");
+            printTotal("Protein", log.totalProtein(today), "g");
+            printTotal("Carbs", log.totalCarbs(today), "g");
+            printTotal("Fat", log.totalFat(today), "g");
+            printTotal("Sugar", log.totalSugar(today), "g");
+            printTotal("Sodium", log.totalSodiumMg(today), "mg");
+            printTotal("Potassium", log.totalPotassiumMg(today), "mg");
+            IO.println("\nNo goals set yet. Choose 3 from the menu to set them.");
+        } else {
+            IO.println("\n--- Totals vs Goals ---");
+            printNutrient("Calories", log.totalCalories(today), goals.getCalories(), "cal");
+            printNutrient("Protein", log.totalProtein(today), goals.getProtein(), "g");
+            printNutrient("Carbs", log.totalCarbs(today), goals.getCarbs(), "g");
+            printNutrient("Fat", log.totalFat(today), goals.getFat(), "g");
+            printNutrient("Sugar", log.totalSugar(today), goals.getSugar(), "g");
+            printNutrient("Sodium", log.totalSodiumMg(today), goals.getSodiumMg(), "mg");
+            printNutrient("Potassium", log.totalPotassiumMg(today), goals.getPotassiumMg(), "mg");
+        }
     }
 
     private static Goals setGoals() {
@@ -47,6 +62,23 @@ public class Main {
         EntryStorage.saveGoals(goals);
         IO.println("Goals saved.");
         return goals;
+    }
+
+    private static void printTotal(String label, double total, String unit) {
+        IO.println(label + ": " + String.format("%.1f", total) + " " + unit);
+    }
+
+    //One place formats every nutrient line, all seven stay consistent
+    private static void printNutrient(String label, double total, double goal, String unit) {
+        double remaining = goal - total;
+        String status;
+        if (remaining >= 0) {
+            status = String.format("%.1f", remaining) + " left";
+        } else {
+            status = String.format("%.1f", -remaining) + " over";
+        }
+        IO.println(label + ": " + String.format("%.1f", total) + " / "
+                + String.format("%.1f", goal) + " " + unit + " (" + status + ")");
     }
 
     public static void main(String[] args) {
@@ -72,7 +104,7 @@ public class Main {
             } else if (input.equals("0")) {
                 namra = false;
             } else if (input.equals("2")) {
-                viewToday(log);
+                viewToday(log, goals);
             } else if (input.equals("3")) {
                 goals = setGoals();
             } else {
