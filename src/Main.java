@@ -29,23 +29,23 @@ public class Main {
         if (goals == null) {
             // No goals yet, so show plain totals instead of reading from a goals object that doesn't exist.
             IO.println("\n--- Totals ---");
-            printTotal("Calories", log.totalCalories(today), "cal");
-            printTotal("Protein", log.totalProtein(today), "g");
-            printTotal("Carbs", log.totalCarbs(today), "g");
-            printTotal("Fat", log.totalFat(today), "g");
-            printTotal("Sugar", log.totalSugar(today), "g");
-            printTotal("Sodium", log.totalSodiumMg(today), "mg");
-            printTotal("Potassium", log.totalPotassiumMg(today), "mg");
+            printTotal("Calories", log.totalFor(today, "calories"), "cal");
+            printTotal("Protein", log.totalFor(today, "protein"), "g");
+            printTotal("Carbs", log.totalFor(today, "carbs"), "g");
+            printTotal("Fat", log.totalFor(today, "fat"), "g");
+            printTotal("Sugar", log.totalFor(today, "sugar"), "g");
+            printTotal("Sodium", log.totalFor(today, "sodium"), "mg");
+            printTotal("Potassium", log.totalFor(today, "potassium"), "mg");
             IO.println("\nNo goals set yet. Choose 3 from the menu to set them.");
         } else {
             IO.println("\n--- Totals vs Goals ---");
-            printNutrient("Calories", log.totalCalories(today), goals.getCalories(), "cal");
-            printNutrient("Protein", log.totalProtein(today), goals.getProtein(), "g");
-            printNutrient("Carbs", log.totalCarbs(today), goals.getCarbs(), "g");
-            printNutrient("Fat", log.totalFat(today), goals.getFat(), "g");
-            printNutrient("Sugar", log.totalSugar(today), goals.getSugar(), "g");
-            printNutrient("Sodium", log.totalSodiumMg(today), goals.getSodiumMg(), "mg");
-            printNutrient("Potassium", log.totalPotassiumMg(today), goals.getPotassiumMg(), "mg");
+            printNutrient("Calories", log.totalFor(today, "calories"), goals.getCalories(), "cal");
+            printNutrient("Protein", log.totalFor(today, "protein"), goals.getProtein(), "g");
+            printNutrient("Carbs", log.totalFor(today, "carbs"), goals.getCarbs(), "g");
+            printNutrient("Fat", log.totalFor(today, "fat"), goals.getFat(), "g");
+            printNutrient("Sugar", log.totalFor(today, "sugar"), goals.getSugar(), "g");
+            printNutrient("Sodium", log.totalFor(today, "sodium"), goals.getSodiumMg(), "mg");
+            printNutrient("Potassium", log.totalFor(today, "potassium"), goals.getPotassiumMg(), "mg");
         }
     }
 

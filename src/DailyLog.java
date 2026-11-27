@@ -19,65 +19,37 @@ public class DailyLog {
         }
         return matches;
     }
-    public double totalCalories(LocalDate date) {
+    // One loop for every nutrient, so adding a new nutrient later means one new case instead of a copy-pasted method.
+    public double totalFor(LocalDate date, String nutrient) {
         ArrayList<FoodEntry> todaysEntries = getEntriesFor(date);
         double total = 0;
         for (int i = 0; i < todaysEntries.size(); i++) {
-            total += todaysEntries.get(i).getCalories();
-        }
-        return total;
-    }
-
-    public double totalProtein(LocalDate date) {
-        ArrayList<FoodEntry> todaysEntries = getEntriesFor(date);
-        double total = 0;
-        for (int i = 0; i < todaysEntries.size(); i++) {
-            total += todaysEntries.get(i).getProtein();
-        }
-        return total;
-    }
-
-    public double totalCarbs(LocalDate date) {
-        ArrayList<FoodEntry> todaysEntries = getEntriesFor(date);
-        double total = 0;
-        for (int i = 0; i < todaysEntries.size(); i++) {
-            total += todaysEntries.get(i).getCarbs();
-        }
-        return total;
-    }
-
-    public double totalFat(LocalDate date) {
-        ArrayList<FoodEntry> todaysEntries = getEntriesFor(date);
-        double total = 0;
-        for (int i = 0; i < todaysEntries.size(); i++) {
-            total += todaysEntries.get(i).getFat();
-        }
-        return total;
-    }
-
-    public double totalSugar(LocalDate date) {
-        ArrayList<FoodEntry> todaysEntries = getEntriesFor(date);
-        double total = 0;
-        for (int i = 0; i < todaysEntries.size(); i++) {
-            total += todaysEntries.get(i).getSugar();
-        }
-        return total;
-    }
-
-    public double totalSodiumMg(LocalDate date) {
-        ArrayList<FoodEntry> todaysEntries = getEntriesFor(date);
-        double total = 0;
-        for (int i = 0; i < todaysEntries.size(); i++) {
-            total += todaysEntries.get(i).getSodiumMg();
-        }
-        return total;
-    }
-
-    public double totalPotassiumMg(LocalDate date) {
-        ArrayList<FoodEntry> todaysEntries = getEntriesFor(date);
-        double total = 0;
-        for (int i = 0; i < todaysEntries.size(); i++) {
-            total += todaysEntries.get(i).getPotassiumMg();
+            FoodEntry entry = todaysEntries.get(i);
+            switch (nutrient) {
+                case "calories":
+                    total += entry.getCalories();
+                    break;
+                case "protein":
+                    total += entry.getProtein();
+                    break;
+                case "carbs":
+                    total += entry.getCarbs();
+                    break;
+                case "fat":
+                    total += entry.getFat();
+                    break;
+                case "sugar":
+                    total += entry.getSugar();
+                    break;
+                case "sodium":
+                    total += entry.getSodiumMg();
+                    break;
+                case "potassium":
+                    total += entry.getPotassiumMg();
+                    break;
+                default:
+                    throw new IllegalArgumentException("Unknown nutrient: " + nutrient);
+            }
         }
         return total;
     }
