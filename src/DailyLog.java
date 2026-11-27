@@ -19,7 +19,7 @@ public class DailyLog {
         }
         return matches;
     }
-    // One loop for every nutrient, so adding a new nutrient later means one new case instead of a copy-pasted method.
+    //One loop for every nutrient, adding a new nutrient later means one new case, not new method.
     public double totalFor(LocalDate date, String nutrient) {
         ArrayList<FoodEntry> todaysEntries = getEntriesFor(date);
         double total = 0;
