@@ -116,7 +116,12 @@ public class Main {
     }
 
     private static void addFood(DailyLog log) {
-        String name = IO.readln("Food name: ");
+        //Ask for the name first, repeat until valid, blank name doesn't cost seven typed numbers.
+        String name = IO.readln("Food name: ").trim();
+        while (name.isEmpty()) {
+            IO.println("Food name cannot be empty.");
+            name = IO.readln("Food name: ").trim();
+        }
         double calories = readNonNegativeNumber("Calories: ");
         double protein = readNonNegativeNumber("Protein (g): ");
         double carbs = readNonNegativeNumber("Carbs (g): ");
